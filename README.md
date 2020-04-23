@@ -1,2 +1,3 @@
 # miscellaneous-fun-projects
-A collection of projects, mostly for fun puzzle solving as well as some useful math
+A collection of projects, puzzle solving and some useful math.  If this sort of
+problem solving is interesting to you, check out codewars!
