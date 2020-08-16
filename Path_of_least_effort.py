@@ -47,8 +47,8 @@ def smallest_path_finder(maze):
 
     def climb(maze, ls, path, target):
         '''a helper function that relaxes the weighted graph of
-        elevations (maze) in order to make use of Dijkstra's 
-        algorithm for minimum path in a weighted graph.
+        elevations (maze) in order to make use of a modified version
+        of the Bellman-Ford algorithm for minimum paths in a weighted graph.
         '''
         count = 0
         for i, row in enumerate(maze):
