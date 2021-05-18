@@ -1,7 +1,9 @@
 # text_justifier.py
 
+
 def justify(words, width):
-    '''A function that takes a string of text as an input and an
+    '''
+    A function that takes a string of text as an input and an
     integer (width) returns a text block (separated by newlines)
     justified to the desired width.  Greedy algorithm implementation.
     '''
