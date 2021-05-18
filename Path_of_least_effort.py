@@ -1,3 +1,8 @@
+# Path_of_least_effort.py
+
+# import standard library
+import copy
+
 def smallest_path_finder(maze):  
     ''' A function that takes a newline-separated string of strings of size nxn and returns 
     the size of the path from the top left corner to the bottom right that minimizes the 
@@ -28,9 +33,6 @@ def smallest_path_finder(maze):
     has total change of 2.
     '''  
 
-    # import standard library
-    import copy
-
     # split maze string into parts of a list
     maze2 = [i for i in maze.split('\n')]
     N = len(maze2)
@@ -43,53 +45,54 @@ def smallest_path_finder(maze):
     ls = [[0]*len(maze) for i in range(len(maze))]
     path = copy.deepcopy(ls)
     path[1][1] = 1
-    target = [0, 0]
+    target = [0, 0] # rolling step counter
 
-    def climb(maze, ls, path, target):
-        '''a helper function that relaxes the weighted graph of
-        elevations (maze) in order to make use of a modified version
-        of the Bellman-Ford algorithm for minimum paths in a weighted graph.
-        '''
-        count = 0
-        for i, row in enumerate(maze):
-            for j, obj in enumerate(row):
-                if isinstance(maze[i][j], int):
-                    for k in range(-1, 2, 2):
+    return climb(maze, ls, path, target, N)
 
-                        if isinstance(maze[i+k][j], int):
-                            if path[i+k][j] == 0:
+def climb(maze, ls, path, target, N):
+    '''
+    Relaxes certain pairs of the weighted graph of
+    elevations (maze) in order to make use of the Bellman-Ford
+    algorithm for minimum path in a weighted graph.
+    '''
+    count = 0
+    for i, row in enumerate(maze):
+        for j, obj in enumerate(row):
+            if isinstance(maze[i][j], int):
+                for k in range(-1, 2, 2):
+
+                    if isinstance(maze[i+k][j], int):
+                        if path[i+k][j] == 0:
+                            ls[i+k][j] = abs(maze[i+k][j] - maze[i][j]) + ls[i][j]
+                            path[i+k][j] = 1
+                        else:
+                            if abs(maze[i+k][j] - maze[i][j]) + ls[i][j] < ls[i+k][j]:
                                 ls[i+k][j] = abs(maze[i+k][j] - maze[i][j]) + ls[i][j]
-                                path[i+k][j] = 1
-                            else:
-                                if abs(maze[i+k][j] - maze[i][j]) + ls[i][j] < ls[i+k][j]:
-                                    ls[i+k][j] = abs(maze[i+k][j] - maze[i][j]) + ls[i][j]
-                                    count += 1
+                                count += 1
 
-                        if isinstance(maze[i][j+k], int):
-                            if path[i][j+k] == 0:
+                    if isinstance(maze[i][j+k], int):
+                        if path[i][j+k] == 0:
+                            ls[i][j+k] = abs(maze[i][j+k] - maze[i][j]) + ls[i][j]
+                            path[i][j+k] = 1
+                        else:
+                            if abs(maze[i][j+k] - maze[i][j]) + ls[i][j] < ls[i][j+k]:
                                 ls[i][j+k] = abs(maze[i][j+k] - maze[i][j]) + ls[i][j]
-                                path[i][j+k] = 1
-                            else:
-                                if abs(maze[i][j+k] - maze[i][j]) + ls[i][j] < ls[i][j+k]:
-                                    ls[i][j+k] = abs(maze[i][j+k] - maze[i][j]) + ls[i][j]
-                                    count += 1
+                                count += 1
 
-        if count > 0:
+    if count > 0:
+        # Speeds up the algorithm, at the expense of correctness: the following is 
+        # only correct with high probability.  For an always-correct algorithm,
+        # the following two lines may be removed.  This method returns the value
+        # of smallest total change if the minimized value does not change after 
+        # consecutive relaxation steps.  If running time is not an issue,
+        # the climb function should be called whenever count > 0. 
+        if ls[N][N] != target[-1] or ls[N][N] != target[-2]:
+            target.append(ls[N][N])
 
-            # Speeds up the algorithm, at the expense of correctness: the following is 
-            # only correct with high probability.  For an always-correct algorithm,
-            # the following two lines may be removed.  This method returns the value
-            # of smallest total change if the minimized value does not change after 
-            # consecutive relaxation steps.  If running time is not an issue,
-            # the climb function should be called whenever count > 0. 
-            if ls[N][N] != target[-1] or ls[N][N] != target[-2]:
-                target.append(ls[N][N])
-
-                return climb(maze, ls, path, target)
-            return ls[N][N]
+            return climb(maze, ls, path, target, N)
         return ls[N][N]
 
-    return climb(maze, ls, path, target)
+    return ls[N][N]
 
 # example input of elevations
 maze = "\n".join([

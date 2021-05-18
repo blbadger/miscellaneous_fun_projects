@@ -1,4 +1,6 @@
-def connect_four_winner(pieces_position_list):
+# connect_four.py
+
+def connect_four_winner(moves_list):
     '''A function that takes a list of connect four moves (each
     move in the format of X_color where X is the row of piece addition
     and color is the color of the piece moved) and returns the winning 
@@ -11,7 +13,7 @@ def connect_four_winner(pieces_position_list):
         [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]]
 
     # add each move to the board and check if either color has won
-    for move in pieces_position_list:
+    for move in moves_list:
         if move[2:] == 'Red':
             piece = 1
         else: 
@@ -22,6 +24,8 @@ def connect_four_winner(pieces_position_list):
                     if board[k][i] == 0:
                         board[k][i] = piece
                         break
+        import pprint
+        pprint.pprint (board)
 
         for i in range(6):
             for j in range(7):
@@ -62,13 +66,10 @@ def connect_four_winner(pieces_position_list):
 
 
 # example input
-pieces_position_list = [
+moves_list = [
 "F_Yellow", "G_Red", "D_Yellow", "C_Red", "A_Yellow", "A_Red", "E_Yellow", "D_Red", "D_Yellow", "F_Red", 
 "B_Yellow", "E_Red", "C_Yellow", "D_Red", "F_Yellow", "D_Red", "D_Yellow", "F_Red", "G_Yellow", "C_Red", 
-"F_Yellow", "E_Red", "A_Yellow", "A_Red", "C_Yellow", "B_Red", "E_Yellow", "C_Red", "E_Yellow", "G_Red", 
-"A_Yellow", "A_Red", "G_Yellow", "C_Red", "B_Yellow", "E_Red", "F_Yellow", "G_Red", "G_Yellow", "B_Red", 
-"B_Yellow", "B_Red"
-]
+"F_Yellow", "E_Red"]
 
 # example function call
-print (connect_four_winner(pieces_position_list))
+print (connect_four_winner(moves_list))

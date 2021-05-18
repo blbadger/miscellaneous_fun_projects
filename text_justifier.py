@@ -1,11 +1,12 @@
-def justify(text, width):
+# text_justifier.py
+
+def justify(words, width):
     '''A function that takes a string of text as an input and an
     integer (width) returns a text block (separated by newlines)
-    justified to the desired width
+    justified to the desired width.  Greedy algorithm implementation.
     '''
 
     # initialization
-    words = [i for i in text.split(' ')]
     string = ''
     i, l,  count = 0, 0, 0
 
@@ -48,13 +49,12 @@ def justify(text, width):
                 string += words[l+k] + ' ' 
             break
 
-    if string[-1] in [' ', '\n']:
-        return string[:-1]
-    else:
-        return string 
+    ls = [i for i in string.split("\n")]
+    return ls
+
 
 # example input
-text = 'Four score and seven years ago, our fathers brought forth upon this continent a new Nation, conceived in Liberty, and with the proposition that all men are created Equal.'
-
+words = ["This", "is", "an", "example", "of", "text", "justification."]
+width = 16
 # example function call
-print (justify(text, 20))
+print (justify(words, width))

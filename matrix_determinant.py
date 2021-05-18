@@ -1,7 +1,10 @@
+# matrix_determinant.py
+
 # standard library
 import copy
+matrix_dictionary = {}
 
-def determinant(matrix):
+def determinant(matrix, matrix_dictionary):
     ''' Returns the determinant of a matrix of arbirtary size 
     (note that only nxn matricies have determinants).  Takes
     one argument, a list of lists corresponding to an array
@@ -23,13 +26,26 @@ def determinant(matrix):
         for i in range(len(matrix)):
             new_matrix = [matrix[j] for j in range(len(matrix)) if j != 0]
             new_matrix2 = copy.deepcopy(new_matrix)
+            
             for row in new_matrix2:
                 del row[i]
 
-            if i%2 == 0:
-                result += matrix[0][i] * determinant(new_matrix2)
+            new_tuple = tuple(tuple(i) for i in new_matrix2)
+            if i % 2 == 0:
+                if new_tuple not in matrix_dictionary:
+                    new_matrix_det = determinant(new_matrix2, matrix_dictionary)
+                    result += matrix[0][i] * new_matrix_det
+                    matrix_dictionary[new_tuple] = new_matrix_det
+                else:
+                    result += matrix[0][i] * matrix_dictionary[new_tuple]
             else:
-                result -= matrix[0][i] * determinant(new_matrix2)
+                if new_tuple not in matrix_dictionary:
+                    new_matrix_det = determinant(new_matrix2, matrix_dictionary)
+                    matrix_dictionary[new_tuple] = new_matrix_det
+                    result -= matrix[0][i] * new_matrix_det
+                else:
+                    result -= matrix[0][i] * matrix_dictionary[new_tuple]
+
 
     return result
 
@@ -46,5 +62,7 @@ matrix = [
 [1, 3, -5, 1, 7, 0, 4, -1]
 ]
 
+matrix2 = [[1,2,3],[4,5,6],[7,8,9]]
+
 # example function call
-print (determinant(matrix))
+print (determinant(matrix, matrix_dictionary))
